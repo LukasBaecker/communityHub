@@ -1,9 +1,10 @@
 import "../styles/globals.scss";
 import type { AppProps } from "next/app";
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useContext, useState, useCallback } from "react";
 //Firebase and Firestore
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase/firebase-config";
+import MySpinner from "../components/Spinner";
 import {
   doc,
   getDoc,
@@ -17,12 +18,13 @@ import { createWrapper } from "next-redux-wrapper";
 //Context and Redux
 import { Provider } from "react-redux";
 import { useAppSelector, useAppDispatch } from "../store/hooks";
-import { setUser } from "../store/actions/user";
+import { setUser } from "../store/slices/userSlice";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import store from "../store/configurateStore";
 import { object } from "yup";
 import { authorize, unauthorize } from "../store/slices/authSlice";
+import { done, loading, setStatus } from "../store/slices/statusSlice";
 
 let persistor = persistStore(store);
 
@@ -30,82 +32,84 @@ function App({ Component, pageProps }: AppProps) {
   const dispatch = useAppDispatch();
   const authState = useAppSelector((state) => state.authState);
   const user = useAppSelector((state) => state.user);
-  const statusRedux = useAppSelector((state) => state.status);
-  const [status, setStatus] = useState("loading");
+  const status = useAppSelector((state) => state.status);
+  const [localStatus, setLocalStatus] = useState("idle");
 
-  const onAuthStateChange = () => {
-    setStatus("loading");
+  const onAuthStateChange = (callback) => {
+    setLocalStatus("loading");
     return onAuthStateChanged(auth, (u) => {
       console.log("authState has changed at firebase");
       if (u) {
         const docRef = doc(db, "user", u.uid);
         //get the additional userdata that is saved to the firestore referenced to the auth user's id
         getDoc(docRef).then((additionalUser) => {
-          var gardenList = additionalUser.data().gardens;
-          //TODO: delete this if not needed anymore var gardenList = [] as object[];
-
-          var gardenArr = [] as object[];
-          if (gardenList.length > 0) {
+          var groupList = additionalUser.data().groups;
+          var groupArr = [] as object[];
+          if (groupList.length > 0) {
             const q = query(
               collection(db, "gardens"),
-              where("__name__", "in", gardenList)
+              where("__name__", "in", groupList)
             );
-            getDocs(q).then((gardens) => {
-              gardens.forEach((g) => {
-                gardenArr.push({
+            getDocs(q).then((groups) => {
+              groups.forEach((g) => {
+                groupArr.push({
                   name: g.data().name,
                   description: g.data().description,
                   roles: g.data().roles,
                 });
               });
               dispatch(
-                setUser({
+                callback({
                   auth: u,
                   data: additionalUser.data(),
-                  gardens: gardenArr,
+                  groups: groupArr,
                 })
               );
-              setStatus("idle");
+              setLocalStatus("idle");
             });
           } else {
             dispatch(
-              setUser({
+              callback({
                 auth: u,
                 data: additionalUser.data(),
-                gardens: gardenArr,
+                groups: groupArr,
               })
             );
-            setStatus("idle");
+            setLocalStatus("idle");
           }
         });
         dispatch(authorize());
       } else {
         dispatch(
-          setUser({
+          callback({
             auth: {},
-            data: { firstname: "", name: "", gardens: [] },
-            gardens: [],
+            data: { firstname: "", name: "", groups: [] },
+            groups: [],
           })
         );
         dispatch(unauthorize());
-        setStatus("idle");
+        setLocalStatus("idle");
       }
     });
   };
 
   useEffect(() => {
-    if (statusRedux != "creatingNewUser") {
-      const unsubscribe = onAuthStateChange();
+    if (status != "createNewUser") {
+      const unsubscribe = onAuthStateChange(setUser);
       return () => {
         unsubscribe();
       };
     }
-  }, [statusRedux]);
+  }, [status]);
 
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <Component {...pageProps} />
+        {status === "loading" || localStatus === "loading" ? (
+          <MySpinner />
+        ) : (
+          <Component {...pageProps} />
+        )}
       </PersistGate>
     </Provider>
   );

@@ -1,11 +1,23 @@
 import { configureStore } from "@reduxjs/toolkit";
 import thunk from "redux-thunk";
-import rootReducer from "./reducers/index";
 import { persistReducer } from "redux-persist";
 const initialState = {};
 const middleware = [thunk];
 import expireReducer from "redux-persist-expire";
+import { combineReducers } from "redux";
 
+//import slices
+import authSlice from "./slices/authSlice";
+import userSlice from "./slices/userSlice";
+import statusSlice from "./slices/statusSlice";
+import activeGroupSlice from "./slices/activeGroupSlice";
+
+const rootReducer = combineReducers({
+  authState: authSlice,
+  user: userSlice,
+  groups: activeGroupSlice,
+  status: statusSlice,
+});
 const persistConfig = {
   key: "root",
   storage: require("redux-persist/lib/storage").default,

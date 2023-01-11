@@ -1,22 +1,26 @@
 @import "./colors";
-
+@import "./alert.scss";
+@import "./navbar.scss";
+@import "./spinner.scss";
+@import "./indexPage.scss";
 // change the default bootstrap theme
 $theme-colors: (
   "primary": $color-primary,
   "secondary": $color-secondary,
-  "danger": $color-danger,
+  "info": $color-info,
   "warning": $color-warning,
+  "danger": $color-danger,
 );
 
 // Import Bootstrap and its default variables
 @import "~bootstrap/scss/bootstrap.scss";
-
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: "Quicksand", sans-serif;
+  overflow-x: hidden;
 }
 
 a {
@@ -33,7 +37,7 @@ a {
     color-scheme: dark;
   }
   body {
-    color: white;
-    background: black;
+    color: $color-secondary;
+    background: #fff;
   }
 }

@@ -8,12 +8,13 @@ import { connectFirestoreEmulator } from "firebase/firestore";
 //Bootstrap
 import { Button, Form } from "react-bootstrap";
 //Components
-import Spinner from "../components/Spinner";
+import MySpinner from "../components/Spinner";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { authorize } from "../store/slices/authSlice";
 import { done, loading } from "../store/slices/statusSlice";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { setStatus } from "../store/slices/statusSlice";
 
 const validationSchemaDE = yup.object().shape({
   email: yup.string().email("Email nicht korrekt."),
@@ -31,38 +32,8 @@ const LoginPage: React.FC = () => {
   const authState = useAppSelector((state) => state.authState);
   const status = useAppSelector((state) => state.status);
 
-  const onLogin = async (values: valuesType) => {
-    try {
-      dispatch(loading());
-      console.log("trying to do it");
-      signInWithEmailAndPassword(auth, values.email, values.password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          console.log(user);
-          dispatch(authorize());
-          dispatch(done());
-        })
-        .catch((err) => {
-          dispatch(done());
-          if (err.message === "Firebase: Error (auth/wrong-password).") {
-            //TODO: Alert.alert("Login fehlgeschlagen: Falsches Passwort!");
-          } else {
-            if (err.message === "Firebase: Error (auth/user-not-found).") {
-              //TODO: Alert.alert("E-Mail Adresse ist nicht registriert.");
-            } else {
-              console.log("this is the error ", err);
-              //TODO: Alert.alert("Login fehlgeschlagen");
-            }
-          }
-        });
-    } catch (error) {
-      console.log(error);
-      //TODO: Alert.alert("Login Failed", error);
-    }
-  };
-
   if (status === "loading") {
-    return <Spinner />;
+    return <MySpinner />;
   }
 
   if (authState) {
@@ -121,7 +92,7 @@ const LoginPage: React.FC = () => {
                   });
               } catch (error) {
                 console.log("outer Error: ", error);
-                setSubmitting(true);
+                setSubmitting(false);
                 dispatch(done());
                 //TODO: Alert.alert("Login Failed", error);
               }

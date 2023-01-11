@@ -20,7 +20,8 @@
     "**/*.ts",
     "**/*.tsx",
     "pages/signup.tsx",
-    "store/reducers/userReducer.js"
+    "store/reducers/userReducer.js",
+    "pages/_document.js"
   ],
   "exclude": ["node_modules"]
 }

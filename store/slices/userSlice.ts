@@ -2,13 +2,13 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface UserState {
   auth: object;
-  data: { firstname: string; name: string; gardens: object[] };
+  data: { firstname: string; name: string; groups: object[] };
   groups: object[];
 }
 
 const initialState = {
   auth: {},
-  data: { firstname: "", name: "", gardens: [] },
+  data: { firstname: "", name: "", groups: [] },
   groups: [],
 } as UserState;
 
@@ -19,7 +19,7 @@ const userSlice = createSlice({
     logout(state) {
       state = {
         auth: {},
-        data: { firstname: "", name: "", gardens: [] },
+        data: { firstname: "", name: "", groups: [] },
         groups: [],
       };
       return state;

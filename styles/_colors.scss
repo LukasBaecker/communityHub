@@ -1,16 +1,16 @@
-$color-primary: #1d965c;
-$color-primary-opaque: #1d965cf1;
-$color-primary-more-opaque: #1d965c66;
-$color-primary-hover: #3fb97e;
-$color-secondary: #d8c3a5;
-$color-secondary-opaque: #d8c3a5cc;
-$color-tertiary: #48332d;
-$color-tertiary-hover: #856b69;
-$color-base: #eae7dc;
+$color-primary: #ffcf6c;
+$color-primary-opaque: #ffcf6ccc;
+$color-secondary: #182a50;
+$color-secondary-opaque: #182a50cc;
+$color-info: #25848e;
+$color-info-opaque: #25848ecc;
+$color-warning: #d9765e;
+$color-warning-opaque: #d9765ecc;
 $color-danger: #fc4445;
-$color-warning: #ddd01a;
 
 :export {
   color-primary: $color-primary;
   color-secondary: $color-secondary;
+  color-warning: $color-warning;
+  color-info: $color-info;
 }
