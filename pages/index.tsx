@@ -25,8 +25,8 @@ function Home() {
   } else {
     return (
       <>
-        <Drawer></Drawer>
-        <Container>
+        <Drawer />
+        <Container id='indexContainer'>
           <Row className='jumbotron'>
             <div className='jumbotron-color jumbotron-color-2'></div>
             <div className='jumbotron-color jumbotron-color-3'></div>
