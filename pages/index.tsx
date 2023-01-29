@@ -21,7 +21,6 @@ function Home() {
   if (authState !== true) {
     router.push("/login");
     dispatch(done());
-    return <MySpinner />;
   } else {
     return (
       <>

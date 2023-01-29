@@ -7,6 +7,8 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 //Bootstrap
 import { Button, Form } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
+
 //Redux and Context
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { authorize } from "../store/slices/authSlice";
@@ -46,17 +48,23 @@ const SignUp: React.FC = () => {
   });
 
   return (
-    <div className='min-h-screen flex bg-gray-200'>
-      <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
-        <div className='text-center mt-24'>
+    <Container className='signPagesContainer'>
+      <Row>
+        <Col>
           <h2 className='mt-6 text-center text-3xl leading-9 font-   extrabold text-gray-900'>
             Sign up
           </h2>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
           <p className='mt-2 text-center text-md text-gray-600'>
             already have an account? <Link href='/login'>Log in</Link>
           </p>
-        </div>
-        <div className='mt-8 bg-black py-8 px-4 shadow sm:rounded-lg sm:px-10'>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
           <Formik
             initialValues={{ email: "", password: "", name: "", firstname: "" }}
             validationSchema={validationSchemaDE}
@@ -140,7 +148,6 @@ const SignUp: React.FC = () => {
                   <Form.Control
                     type='text'
                     name='firstname'
-                    placeholder='Vorname'
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.firstname}
@@ -157,7 +164,6 @@ const SignUp: React.FC = () => {
                   <Form.Control
                     type='text'
                     name='name'
-                    placeholder='Name'
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.name}
@@ -172,7 +178,6 @@ const SignUp: React.FC = () => {
                   <Form.Control
                     type='text'
                     name='email'
-                    placeholder='Email'
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.email}
@@ -188,7 +193,6 @@ const SignUp: React.FC = () => {
                   <Form.Label>Passwort</Form.Label>
                   <Form.Control
                     type='password'
-                    placeholder='Passwort'
                     name='password'
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -211,9 +215,9 @@ const SignUp: React.FC = () => {
               </Form>
             )}
           </Formik>
-        </div>
-      </div>
-    </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 export default SignUp;

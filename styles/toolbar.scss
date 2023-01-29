@@ -15,13 +15,21 @@
 }
 .toolbarCol {
   height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 0 !important;
 }
 .toolbarIcon {
-  color: white;
+  color: inherit;
   height: 60%;
   width: auto;
+}
+.toolbarLinks {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+.toolbarLinks:hover {
+  color: $color-secondary;
 }

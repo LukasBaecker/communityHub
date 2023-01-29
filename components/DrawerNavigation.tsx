@@ -4,6 +4,7 @@ import * as AiIcons from "react-icons/ai";
 import Link from "next/link";
 import { IconContext } from "react-icons";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { useRouter } from "next/router";
 import { FaBars } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
 import { FaFeather } from "react-icons/fa";
@@ -14,12 +15,14 @@ import { auth } from "../firebase/firebase-config";
 import { unauthorize } from "../store/slices/authSlice";
 import { Container, Row, Col } from "react-bootstrap";
 import { IoIosArrowForward } from "react-icons/io";
+import { AiFillPlusCircle } from "react-icons/ai";
 type groupeType = {
   name: string;
   description: string;
   roles: object;
 };
 function Drawer() {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const [sidebar, setSidebar] = useState(false);
   const [extended, setExtended] = useState(false);
@@ -29,10 +32,10 @@ function Drawer() {
     setExtended(false);
   };
   const user = useAppSelector((state) => state.user);
-  console.log("this is the user State: ", user);
   const userGroups = useAppSelector((state) => state.user.groups);
 
   const logout = async () => {
+    router.push("/");
     dispatch(loading());
     signOut(auth).then((response) => {
       dispatch(unauthorize());
@@ -83,7 +86,12 @@ function Drawer() {
             </ul>
           </Row>
           <Row className={extended ? "nav-bottom extended" : "nav-bottom"}>
-            <Col>
+            <Col className='addGroupButton' sm={12}>
+              <Link className='garden-links' href={"/addGroup"}>
+                <AiFillPlusCircle className='plusIcon' />
+              </Link>
+            </Col>
+            <Col sm={12}>
               {" "}
               <Button variant='danger' onClick={() => logout()}>
                 Logout

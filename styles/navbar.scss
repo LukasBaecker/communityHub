@@ -90,12 +90,15 @@ $navbar-width: 250px;
   z-index: 100;
   .container {
     margin-left: 2rem;
+    max-height: 100vh;
   }
   .row {
     width: 100%;
   }
   ul {
     list-style-type: none;
+    overflow-y: scroll;
+    max-height: calc(100vh - 140px - 3rem - 2rem);
 
     hr {
       border-top: 1px solid $color-secondary;
@@ -113,6 +116,8 @@ $navbar-width: 250px;
   button {
     margin-top: 8px;
     color: $color-primary;
+    height: 3rem !important;
+    font-size: 1.5rem;
   }
   .nav-bottom {
     width: $navbar-width;
@@ -187,4 +192,15 @@ span {
 
 .extended {
   width: 100vw !important;
+}
+
+.addGroupButton {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding-top: 20px;
+}
+.plusIcon {
+  height: 3rem;
+  width: auto;
 }

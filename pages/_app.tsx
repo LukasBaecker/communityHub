@@ -47,7 +47,7 @@ function App({ Component, pageProps }: AppProps) {
           var groupArr = [] as object[];
           if (groupList.length > 0) {
             const q = query(
-              collection(db, "gardens"),
+              collection(db, "groups"),
               where("__name__", "in", groupList)
             );
             getDocs(q).then((groups) => {
