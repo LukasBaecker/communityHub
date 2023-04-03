@@ -10,6 +10,7 @@ import {
   AiOutlineRead,
   AiFillRead,
 } from "react-icons/ai";
+import { BsCheckCircleFill, BsCircle } from "react-icons/bs";
 
 export default function Toolbar() {
   const router = useRouter();
@@ -33,7 +34,7 @@ export default function Toolbar() {
           <Link
             className='toolbarLinks'
             href={"/group/" + groupName + "/tasks"}>
-            <AiFillCheckCircle className='toolbarIcon' />
+            <BsCheckCircleFill className='toolbarIcon' />
           </Link>
         </Col>{" "}
         <Col className='toolbarCol'>

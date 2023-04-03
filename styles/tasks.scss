@@ -1,0 +1,23 @@
+$checkerWidth: 40px;
+
+#taskContainer {
+  max-width: 960px !important ;
+  margin-bottom: 150px;
+}
+
+.taskCard {
+  .checkerCol {
+    max-width: $checkerWidth;
+    padding: 0;
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+  .taskChecker {
+    width: $checkerWidth;
+    height: auto;
+  }
+  .unchecked {
+  }
+  .checked {
+  }
+}

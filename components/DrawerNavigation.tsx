@@ -15,6 +15,7 @@ import { auth } from "../firebase/firebase-config";
 import { unauthorize } from "../store/slices/authSlice";
 import { Container, Row, Col } from "react-bootstrap";
 import { IoIosArrowForward } from "react-icons/io";
+import { IoSearchCircleSharp } from "react-icons/io5";
 import { AiFillPlusCircle } from "react-icons/ai";
 type groupeType = {
   name: string;
@@ -68,7 +69,6 @@ function Drawer() {
             <ul className='nav-menu-items' onClick={showSidebar}>
               <li key={"mainPage"} className={"mainPage"}>
                 <Link className='garden-links' href={"/"}>
-                  {/*<FaFeather />*/}
                   <span>{"ÜBERSICHT"}</span>
                 </Link>
               </li>
@@ -76,8 +76,7 @@ function Drawer() {
               {userGroups.map((item: groupeType, index: number) => {
                 return (
                   <li key={index} className={item.name}>
-                    <Link className='garden-links' href={"/group/" + item.name}>
-                      {/*<FaFeather />*/}
+                    <Link className='garden-links' href={`/group/${item.name}`}>
                       <span>{item.name.toUpperCase()}</span>
                     </Link>
                   </li>
@@ -86,14 +85,22 @@ function Drawer() {
             </ul>
           </Row>
           <Row className={extended ? "nav-bottom extended" : "nav-bottom"}>
-            <Col className='addGroupButton' sm={12}>
+            <Col className='addGroupButton' sm={6}>
+              <Link className='garden-links' href={"/searchGroup"}>
+                <IoSearchCircleSharp className='plusIcon' />
+              </Link>
+            </Col>
+            <Col className='addGroupButton' sm={6}>
               <Link className='garden-links' href={"/addGroup"}>
                 <AiFillPlusCircle className='plusIcon' />
               </Link>
             </Col>
             <Col sm={12}>
               {" "}
-              <Button variant='danger' onClick={() => logout()}>
+              <Button
+                variant='warning'
+                onClick={() => logout()}
+                className='logoutButton'>
                 Logout
               </Button>
             </Col>

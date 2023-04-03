@@ -11,8 +11,10 @@ import authSlice from "./slices/authSlice";
 import userSlice from "./slices/userSlice";
 import statusSlice from "./slices/statusSlice";
 import activeGroupSlice from "./slices/activeGroupSlice";
+import alertSlice from "./slices/alertSlice";
 
 const rootReducer = combineReducers({
+  alert: alertSlice,
   authState: authSlice,
   user: userSlice,
   groups: activeGroupSlice,

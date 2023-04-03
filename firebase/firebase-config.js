@@ -24,3 +24,5 @@ onAuthStateChanged(auth, (user) => {
     console.log("We are not authenticated anymore!");
   }
 });
+
+export const checkJoinRequest = (user, groupId) => {};

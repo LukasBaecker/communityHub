@@ -1,10 +1,10 @@
 .toolbar {
-  position: absolute;
+  position: fixed;
   padding: 0 !important;
   z-index: 90;
   background-color: $color-info;
   width: 100vw;
-  max-width: 500px;
+  max-width: 720px !important;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);

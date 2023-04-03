@@ -34,7 +34,7 @@ const validationSchemaDE = yup.object().shape({
     .string()
     .required("Email ist für die Registrierung erforderlich.")
     .email("Email nicht korrekt."),
-  name: yup.string().required("Bitte gib einen Namen für deinen Garten ein."),
+  name: yup.string().required("Bitte gib einen Namen für deine Gruppe ein."),
   description: yup.string().required("Beschreibe deine neue Gruppe."),
   phone: yup.string().required("Bitte gib eine Telefonnummer an."),
 });
@@ -77,59 +77,58 @@ const AddGroup: React.FC = () => {
             onSubmit={(values: valuesType, { setSubmitting, resetForm }) => {
               try {
                 dispatch(loading());
-                //create the datastructure for a new garden
+                //create the datastructure for a new group
                 const data = {
                   name: values.name,
                   description: values.description,
                   phone: values.phone,
                   email: values.email,
                   roles: {},
-                  creator: user.auth.uid,
+                  creator: user.auth,
                 };
                 //add the current user to roles as an owner
-                data.roles[user.auth.uid] = "owner";
+                data.roles[user.auth] = "owner";
 
-                //define the query for the firestore with condition to check if garden with the given name exists
+                //define the query for the firestore with condition to check if group with the given name exists
                 const q = query(
                   collection(db, "groups"),
                   where("name", "==", values.name)
                 );
-                //search the garden collection for the given gardenname
+                //search the group collection for the given groupname
                 getDocs(q).then((res) => {
                   if (res.docs[0] != null) {
-                    //if the gardenname is already in use nothing will be added
+                    //if the groupname is already in use nothing will be added
                     //TODO: change Alert.alert(res.docs[0].data().name, "existiert bereits.");
                     console.log("Group already exists.");
                     setSubmitting(false);
                     dispatch(done());
                   } else {
-                    //create a garden and safe it to the database
+                    //create a group and safe it to the database
                     // Add a new document in collection "groups/"
                     var collectionRef = collection(db, "groups");
                     addDoc(collectionRef, data)
-                      .then((gardenRef) => {
-                        let newGarden = [data];
-                        let gardenIdArr = user.data.groups.concat([
-                          gardenRef.id,
-                        ]); //arr of IDs of groups of the auth. user with the newly created garden
-                        let groupDataArr = user.groups.concat(newGarden); //arr of garden data objects of the auth. user with the newly created garden
-                        //update the Redux store -> adding the new garden to user's data and the arr of garden information
+                      .then((groupRef) => {
+                        let newGroup = [data];
+                        let groupIdArr = user.data.groups.concat([groupRef.id]); //arr of IDs of groups of the auth. user with the newly created group
+                        let groupDataArr = user.groups.concat(newGroup); //arr of group data objects of the auth. user with the newly created group
+                        //update the Redux store -> adding the new group to user's data and the arr of group information
                         dispatch(
                           setUser({
                             auth: { ...user.auth },
-                            data: { ...user.data, groups: gardenIdArr },
+                            data: { ...user.data, groups: groupIdArr },
                             groups: groupDataArr,
                           })
                         );
                         //create the reference to the authorized user
-                        let userRef = doc(db, "user", user.auth.uid);
+                        let userRef = doc(db, "user", user.auth);
                         //update the user-collection at "user/{userId}"
-                        //updating only the array of groups the user is a member of with the newly created garden
+                        //updating only the array of groups the user is a member of with the newly created group
                         updateDoc(userRef, {
-                          groups: gardenIdArr,
+                          groups: groupIdArr,
                         })
                           .then(() => {
                             console.log("group has been created");
+                            router.push("/group/" + values.name);
                             dispatch(done());
                             //TODO: Alerts mit HTML-alerts ersetzen
                             //Alert.alert("Es ist leider ein Fehler aufgetreten.");

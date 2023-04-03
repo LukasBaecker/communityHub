@@ -1,10 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-
-interface UserState {
-  auth: object;
-  data: { firstname: string; name: string; groups: object[] };
-  groups: object[];
-}
+import { UserState, UserAuthState } from "../../types";
 
 const initialState = {
   auth: {},
@@ -12,6 +7,7 @@ const initialState = {
   groups: [],
 } as UserState;
 
+//TODO: adding a type for all teh things I am using here: groups
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -28,8 +24,21 @@ const userSlice = createSlice({
       state = action.payload;
       return state;
     },
+    setUserAuth(state, action: PayloadAction<UserAuthState>) {
+      state = {
+        auth: action.payload.auth,
+        data: action.payload.data,
+        groups: state.groups,
+      };
+      return state;
+    },
+    addGroup(state, action: PayloadAction<Object>) {
+      if (!state.groups.find((o) => o.name === action.payload.name)) {
+        state.groups.push(action.payload);
+      }
+    },
   },
 });
 
-export const { logout, setUser } = userSlice.actions;
+export const { logout, setUser, addGroup, setUserAuth } = userSlice.actions;
 export default userSlice.reducer;
